@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Representors::HalDeserializer do
   subject(:deserializer) {Representors::HalDeserializer.new(document)}
-  let(:semantics_field) {deserializer.to_representor.properties}
+  let(:semantics_field) {deserializer.to_representor.attributes}
   let(:transitions_field) {deserializer.to_representor.transitions}
   let(:embedded_field) {deserializer.to_representor.embedded }
 
@@ -16,7 +16,7 @@ describe Representors::HalDeserializer do
       let(:document) { {}.to_json }
 
       it "returns a hash with no attributes, links or embedded resources" do
-        expect(deserializer.to_representor.properties).to be_empty
+        expect(deserializer.to_representor.attributes).to be_empty
         expect(deserializer.to_representor.transitions).to be_empty
         expect(deserializer.to_representor.embedded).to be_empty
       end
@@ -89,7 +89,7 @@ describe Representors::HalDeserializer do
       end
 
       it 'Creates an embedded resource with its data' do
-        expect(embedded_field['embedded_book'].properties).to eq(embedded_book)
+        expect(embedded_field['embedded_book'].attributes).to eq(embedded_book)
       end
     end
 
@@ -113,7 +113,7 @@ describe Representors::HalDeserializer do
 
       it 'Creates embedded resources with its data' do
         embedded_books.each_with_index do |item, index|
-          expect(embedded_field['embedded_books'][index].properties).to eq(item)
+          expect(embedded_field['embedded_books'][index].attributes).to eq(item)
         end
       end
     end

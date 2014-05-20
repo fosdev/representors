@@ -1,5 +1,6 @@
 require 'yaml'
 require 'enumerable/lazy' if RUBY_VERSION < '2.0'
+require_relative 'serialization'
 
 module Representors
   ##
