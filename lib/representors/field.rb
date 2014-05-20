@@ -52,7 +52,7 @@ module Representors
 
     # @return [Array] who's elements are all Representors::Options objects
     def options
-      @options ||= Representors::Options.new(@field_hash[OPTIONS_KEY], name)
+      @options ||= Options.new(@field_hash[OPTIONS_KEY], name)
     end
 
     # @returns the value of the field

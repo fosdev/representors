@@ -21,11 +21,8 @@ module Representors
             sample: 1,
             value: 2
           },
-          uptime: {
-            value: '76ms'
-          },
-          brackreference: {
-            value: 886396728
+          reference: {
+            value: 'Fort::4652'
           }
         }
       }
@@ -109,8 +106,8 @@ module Representors
       describe '#properties' do
         it 'returns a hash of attributes associated with the represented resource' do
           @representor_hash =  @base_representor.merge(@semantic_elements)
-          semantic_elements_present =  %w(total_count uptime brackreference).all? do |key|
-            subject.properties[key.to_sym] == @semantic_elements[:semantics][key.to_sym][:value]
+          semantic_elements_present =  %w(total_count reference).all? do |key|
+            subject.attributes[key.to_sym] == @semantic_elements[:semantics][key.to_sym][:value]
           end
           expect(semantic_elements_present).to be_true
          end
@@ -139,7 +136,7 @@ module Representors
 
         it 'doesn\'t blow up even if nothing is embedded' do
           @representor_hash = @base_representor
-          expect(subject.embedded.count).to eq(0)
+          expect(subject.embedded).to be_empty
         end
       end
 

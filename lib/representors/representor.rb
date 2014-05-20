@@ -5,6 +5,9 @@ module Representors
   ##
   # Manages the respresentation of hypermedia messages for different media-types.
   class Representor
+
+    include Serialization
+
     DOC_KEY = :doc
     LINK_KEY = :href
     PROTOCOL_KEY = :protocol
@@ -53,8 +56,8 @@ module Representors
     end
 
     # @return [Hash] the resource attributes inferred from representor[:semantics]
-    def properties
-      @properties ||= Hash[(@representor_hash[SEMANTIC_KEY] || {}).map { |k, v| [ k, v[VALUE_KEY]] }]
+    def attributes
+      @attributes ||= Hash[(@representor_hash[SEMANTIC_KEY] || {}).map { |k, v| [ k, v[VALUE_KEY]] }]
     end
 
     # @return [Enumerable] who's elements are all <Representors:Representor> objects

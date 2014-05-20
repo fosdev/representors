@@ -32,14 +32,14 @@ module Representors
 
       describe '#name' do
         it 'returns the key when requesting the name' do
-          expect(subject.name).to eq(field_hash.keys.first)
+          expect(field_hash.keys).to include(subject.name)
         end
       end
 
       %w(value default description type data_type).map(&:to_sym).each do |key|
         describe "\##{key}" do
           it "returns it's hash value" do
-           expect(subject.send(key)).to eq(field_hash.first[1][key])
+           expect(subject.send(key)).to eq(field_hash[:total_count][key])
           end
         end
       end
