@@ -7,31 +7,31 @@ module Representors
     before do
       @minimum_valid_document = {}
       @self_reference = {
-        transitions: {
-            self: {
+        transitions: [{
+              rel: 'self',
               href: "/example_resource"
-            },}
+            }]
         }
       @next_reference = {
-        transitions: {
-            next: {
+        transitions: [{
+              rel: 'next',
               href: "/page=2"
-            },}
+            }]
         }
       @link_items = {
         embedded: {
           items: [{
-          transitions: {
-            self: {
+          transitions: [{
+              rel: 'self',
               href: "/first_item"
             }
-          }
+          ]
         },{
-          transitions: {
-            self: {
+          transitions: [{
+              rel: 'self',
               href: "/second_item"
             }
-          }
+          ]
         }]}
       }
 
@@ -47,22 +47,28 @@ module Representors
         embedded: {
           orders: [
           {
-            transitions: {
-              self: { href: "/orders/123" },
-              basket: { href: "/baskets/98712" },
-              customer: { href: "/customers/7809" }
-            },
+            transitions: [{
+              rel: 'self',
+              href: "/orders/123" },{
+              rel: 'basket',
+              href: "/baskets/98712" },{
+              rel: 'customer',
+              href: "/customers/7809" }
+            ],
             semantics: {
               total: { value: 30.00 },
               currency: { value: "USD" },
               status: { value: "shipped" }
             },
           },{
-            transitions: {
-              self: { href: "/orders/124" },
-              basket: { href: "/baskets/97213" },
-              customer: { href: "/customers/12369" }
-            },
+            transitions: [{
+              rel: 'self',
+              href: "/orders/124" },{
+              rel: 'basket',
+              href: "/baskets/97213" },{
+              rel: 'customer',
+              href: "/customers/12369" }
+            ],
             semantics: {
               total: { value: 20.00 },
               currency: { value: "USD" },
@@ -74,43 +80,51 @@ module Representors
 
       #TODO: Curies
       @complex_doc = {
-        transitions: {
-          self: { href: "/orders" },
-          next: { href: "/orders?page=2" },
-          find: {
-            href: "/orders",
-            descriptors: {
-              id: {
-                scope: 'url',
-              },
-            }
-          },
-          admin: { #IMPOSSIBLE with current Descriptor
-            href: "/admins/2",
+        transitions: [{
+          rel: 'self',
+          href: "/orders" },{
+          rel: 'next',
+          href: "/orders?page=2" },{
+          rel: 'find',
+          href: "/orders",
+          descriptors: {
+            id: {
+              scope: 'url',
+            },
           }
-        },
+          },{
+           rel: 'admin', #IMPOSSIBLE with current Descriptor
+           href: "/admins/2",
+          }
+        ],
         semantics: {
           currentlyProcessing: {value: 14},
           shippedToday: {value: 20},
         },
         embedded: {
           orders: [ {
-            transitions: {
-                self: { href: "/orders/123" },
-                basket: { href: "/baskets/98712" },
-                customer: { href: "/customers/7809" }
-            },
+            transitions: [{
+              rel: 'self',
+              href: "/orders/123" },{
+              rel: 'basket',
+              href: "/baskets/98712" },{
+              rel: 'customer',
+              href: "/customers/7809" }
+            ],
             semantics: {
                total: { value: 30.00 },
                currency: { value: "USD" },
                status: { value: "shipped" }
                },
           }, {
-            transitions: {
-                self: { href: "/orders/124" },
-                basket: { href: "/baskets/97213" },
-                customer: { href: "/customers/12369" }
-            },
+            transitions: [{
+              rel: 'self',
+              href: "/orders/124" },{
+              rel: 'basket',
+              href: "/baskets/97213" },{
+              rel: 'customer',
+              href: "/customers/12369" }
+            ],
             semantics: {
               total: { value: 20.00 },
               currency: { value: "USD" },
@@ -124,7 +138,7 @@ module Representors
       @media = 'application/hal+json'
 
       def assert_serialization(subject, object, options={})
-        subject.to_media_type(@media, options).should == object
+        expect(subject.to_media_type(@media, options)).to eq(object)
       end
     end
 
@@ -146,7 +160,7 @@ module Representors
           @representor_hash = @self_reference
           hal_serialization = {
             _links: {
-              self: {
+              'self' => {
                 href: "/example_resource"
               }
             }
@@ -162,7 +176,7 @@ module Representors
           @representor_hash = @next_reference
           hal_serialization = {
             _links: {
-              next: {
+              'next' => {
                 href: "/page=2"
               }
             }
@@ -210,7 +224,7 @@ module Representors
           @representor_hash = @embedded
           hal_serialization = {
             _links: {
-              orders:[
+              'orders' => [
                 {:href=>"/orders/123"},
                 {:href=>"/orders/124"}
               ]
@@ -218,18 +232,18 @@ module Representors
             _embedded: {orders: [
               {
                 _links: {
-                  self: { href: "/orders/123" },
-                  basket: { href: "/baskets/98712" },
-                  customer: { href: "/customers/7809" }
+                  'self' => { href: "/orders/123" },
+                  'basket' => { href: "/baskets/98712" },
+                  'customer' => { href: "/customers/7809" }
                 },
                 total: 30.00,
                 currency: "USD",
                 status: "shipped"
               },{
                 _links: {
-                  self: { href: "/orders/124" },
-                  basket: { href: "/baskets/97213" },
-                  customer: { href: "/customers/12369" }
+                  'self' => { href: "/orders/124" },
+                  'basket' => { href: "/baskets/97213" },
+                  'customer' => { href: "/customers/12369" }
                 },
                 total: 20.00,
                 currency: "USD" ,
