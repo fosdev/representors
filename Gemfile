@@ -15,6 +15,6 @@ end
 group :test do
   gem 'rspec',     '~> 2.14.1'
   gem 'simplecov', '~> 0.8.2'
-  gem 'mutant', '~> 0.5.12'
-  gem 'mutant-rspec', '~> 0.5.10'
+  gem 'mutant', git: 'https://github.com/JordiPolo/mutant', branch: 'feature/html_report'
+  gem 'mutant-rspec', git: 'https://github.com/JordiPolo/mutant', branch: 'feature/html_report'
 end
